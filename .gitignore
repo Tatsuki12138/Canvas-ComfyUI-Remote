@@ -5,6 +5,7 @@ Canvas.apk
 *.keystore
 *.jks
 keystore.properties
+signing.properties
 
 # Python
 gateway/.venv/

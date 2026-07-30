@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+def canvasKeystorePath = System.getenv('CANVAS_KEYSTORE_PATH')
+def canvasKeystorePassword = System.getenv('CANVAS_KEYSTORE_PASSWORD')
+def canvasKeyAlias = System.getenv('CANVAS_KEY_ALIAS')
+def canvasKeyPassword = System.getenv('CANVAS_KEY_PASSWORD')
+def canvasSigningReady = canvasKeystorePath && canvasKeystorePassword && canvasKeyAlias && canvasKeyPassword
+
 android {
     namespace "local.canvas.comfy"
     compileSdk rootProject.ext.compileSdkVersion
@@ -16,10 +22,23 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        if (canvasSigningReady) {
+            release {
+                storeFile file(canvasKeystorePath)
+                storePassword canvasKeystorePassword
+                keyAlias canvasKeyAlias
+                keyPassword canvasKeyPassword
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (canvasSigningReady) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }

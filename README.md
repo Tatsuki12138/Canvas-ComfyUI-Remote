@@ -34,6 +34,12 @@ ComfyUI 127.0.0.1:8188
 
 ## Quick start
 
+### For normal users
+
+Download the APK and Windows Gateway ZIP from the latest GitHub Release. Install the APK, extract the ZIP, then run `First-Run-Setup.cmd`. The packaged Gateway does not require a separate Python installation.
+
+### From source
+
 Requirements:
 
 - Windows 10 or 11
@@ -57,6 +63,8 @@ Canvas-Control-Center.cmd
 Press **Start Canvas**, copy the APP URL and pairing code, install/open the Android APP, and enter both values.
 
 The complete Chinese guide is in [docs/使用说明.md](docs/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md).
+
+Release maintainers should follow [docs/RELEASING.md](docs/RELEASING.md). Never commit Android signing files.
 
 ## Build the Android APP
 

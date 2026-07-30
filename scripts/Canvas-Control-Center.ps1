@@ -5,9 +5,11 @@ $SwitchScript = Join-Path $PSScriptRoot 'Switch-CanvasMode.ps1'
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $HtmlPath = Join-Path $ProjectRoot 'control-center\index.html'
 $Edge = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-$BrowserData = Join-Path $ProjectRoot 'logs\control-center-browser'
-$SessionInfoPath = Join-Path $ProjectRoot 'logs\control-center-session.json'
-$ControlLogPath = Join-Path $ProjectRoot 'logs\control-center.log'
+$DataDir = if ($env:CANVAS_DATA_DIR) { $env:CANVAS_DATA_DIR } else { Join-Path $env:APPDATA 'CanvasGateway' }
+$ControlData = Join-Path $DataDir 'control-center'
+$BrowserData = Join-Path $ControlData 'browser'
+$SessionInfoPath = Join-Path $ControlData 'session.json'
+$ControlLogPath = Join-Path $ControlData 'control-center.log'
 
 function Open-ControlWindow([string]$Url) {
     if ($Url -and (Test-Path -LiteralPath $Edge)) {

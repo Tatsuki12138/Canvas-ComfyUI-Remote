@@ -98,6 +98,7 @@ function Start-Gateway {
     $stdout = Join-Path $LogDir 'gateway.out.log'
     $stderr = Join-Path $LogDir 'gateway.err.log'
     Write-Step "Starting Gateway on $LocalBaseUrl"
+    $env:CANVAS_GATEWAY_PORT = [string]$GatewayPort
     if (Test-Path -LiteralPath $GatewayExe) {
         Start-Process -FilePath $GatewayExe -WorkingDirectory $Gateway -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr | Out-Null
     } else {

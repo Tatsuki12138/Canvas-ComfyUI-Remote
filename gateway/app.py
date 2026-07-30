@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import secrets
 import time
 from contextlib import asynccontextmanager
@@ -171,4 +172,5 @@ async def download_apk() -> FileResponse:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=3000, access_log=False)
+    port = int(os.getenv("CANVAS_GATEWAY_PORT", "3000"))
+    uvicorn.run(app, host="127.0.0.1", port=port, access_log=False)
