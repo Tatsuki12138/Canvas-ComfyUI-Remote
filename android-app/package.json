@@ -1,0 +1,24 @@
+{
+  "name": "canvas-comfyui-remote",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "node scripts/test-prompt-store.mjs",
+    "android:add": "cap add android",
+    "android:sync": "npm run build && cap sync android",
+    "android:open": "cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "7.6.8",
+    "@capacitor/core": "7.6.8",
+    "@capacitor/filesystem": "7.1.8",
+    "@capacitor/share": "7.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7.6.8",
+    "vite": "7.3.6"
+  }
+}

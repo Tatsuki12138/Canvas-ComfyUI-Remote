@@ -1,0 +1,26 @@
+{
+  "comfy_url": "http://127.0.0.1:8188",
+  "comfy_python": "C:/path/to/python.exe",
+  "comfy_workdir": "C:/path/to/ComfyUI",
+  "comfy_args": [
+    "main.py",
+    "--listen",
+    "127.0.0.1",
+    "--port",
+    "8188"
+  ],
+  "comfy_output_dir": "C:/path/to/ComfyUI/output",
+  "lora_dirs": [
+    "C:/path/to/ComfyUI/models/loras"
+  ],
+  "checkpoint_dirs": [
+    "C:/path/to/ComfyUI/models/diffusion_models",
+    "C:/path/to/ComfyUI/models/unet",
+    "C:/path/to/ComfyUI/models/checkpoints"
+  ],
+  "proxy_url": "",
+  "danbooru_base_url": "https://danbooru.donmai.us",
+  "retention_hours": 24,
+  "tavern_image_retention_hours": 720,
+  "default_workflow": "anima_base"
+}

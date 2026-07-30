@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Canvas 控制中心</title>
+<style>
+:root{color-scheme:dark;--bg:#000;--surface:#1c1c1e;--surface2:#2c2c2e;--text:#f5f5f7;--muted:#8e8e93;--line:#38383a;--green:#30d158;--red:#ff453a}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--text);font:14px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}.window{width:min(520px,calc(100vw - 28px));padding:28px;border-radius:24px;background:var(--surface)}h1{margin:0;font-size:28px}header p,.footer{color:var(--muted)}header{margin-bottom:24px}.panel{margin:14px 0;border-radius:16px;background:#111;overflow:hidden}.row{display:flex;align-items:center;gap:12px;padding:15px 16px;border-bottom:1px solid var(--line)}.row:last-child{border:0}.label{color:var(--muted);min-width:105px}.value{margin-left:auto;font-family:ui-monospace,Consolas,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.status{margin-left:auto;display:flex;align-items:center;gap:8px}.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}.dot.on{background:var(--green);box-shadow:0 0 10px rgba(48,209,88,.5)}.dot.error{background:var(--red)}.toggle{margin-left:auto;position:relative;width:46px;height:26px}.toggle input{display:none}.toggle span{position:absolute;inset:0;border-radius:20px;background:var(--surface2);cursor:pointer}.toggle span:after{content:"";position:absolute;width:22px;height:22px;left:2px;top:2px;border-radius:50%;background:#fff;transition:.2s}.toggle input:checked+span{background:var(--green)}.toggle input:checked+span:after{transform:translateX(20px)}button{border:0;border-radius:12px;padding:11px 14px;background:var(--surface2);color:var(--text);font-weight:650;cursor:pointer}button.primary{background:#fff;color:#000}button.danger{color:#ff9f9a}button.small{padding:7px 10px;margin-left:4px}.actions{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-top:18px}.footer{min-height:18px;margin-top:18px;text-align:center;font-size:12px}.footer.error{color:var(--red)}button:disabled,input:disabled+span{opacity:.45;cursor:wait}@media(max-width:520px){.actions{grid-template-columns:1fr 1fr}.actions .primary{grid-column:1/-1}.label{min-width:84px}}
+</style>
+</head>
+<body>
+<main class="window">
+  <header><h1>Canvas</h1><p>APP-only · Tailscale private controller</p></header>
+  <section class="panel">
+    <div class="row"><span class="label">Gateway</span><span class="status"><i id="gateway-dot" class="dot"></i><b id="gateway-state">检查中</b></span></div>
+    <div class="row"><span class="label">ComfyUI</span><span class="status"><i id="comfy-dot" class="dot"></i><b id="comfy-state">检查中</b></span></div>
+    <div class="row"><span class="label">APP 私网入口</span><label class="toggle"><input id="private-toggle" type="checkbox" disabled><span></span></label></div>
+  </section>
+  <section class="panel">
+    <div class="row"><span class="label">APP URL</span><span id="app-url" class="value">—</span><button class="small" data-copy="appUrl">复制</button></div>
+    <div class="row"><span class="label">配对码</span><span id="pairing" class="value">—</span><button class="small" data-copy="pairingCode">复制</button></div>
+    <div class="row"><span class="label">Tailscale IP</span><span id="tail-ip" class="value">—</span></div>
+  </section>
+  <div class="actions">
+    <button id="start" class="primary">启动 Canvas</button>
+    <button id="repair">修复连接</button>
+    <button id="refresh">刷新</button>
+    <button id="stop" class="danger">停止</button>
+  </div>
+  <div id="footer" class="footer">正在读取状态…</div>
+</main>
+<script>
+const token=new URLSearchParams(location.search).get('token')||'';
+const $=id=>document.getElementById(id);
+let current={},busy=false,refreshing=false;
+async function api(path,options={},timeoutMs=15000){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);try{const join=path.includes('?')?'&':'?';const response=await fetch(`${path}${join}token=${encodeURIComponent(token)}`,{cache:'no-store',...options,signal:controller.signal});const body=await response.json().catch(()=>({}));if(!response.ok)throw new Error(body.error||`请求失败 (${response.status})`);return body}catch(error){if(error.name==='AbortError')throw new Error('请求超时');throw error}finally{clearTimeout(timer)}}
+function message(value,error=false){$('footer').textContent=value;$('footer').classList.toggle('error',error)}
+function dot(id,on,error=false){$(id).className=`dot ${error?'error':on?'on':''}`}
+function setBusy(value,text=''){busy=value;document.querySelectorAll('button,input').forEach(item=>item.disabled=value);if(!value)$('private-toggle').disabled=false;if(text)message(text)}
+function render(status){current=status||{};dot('gateway-dot',!!current.gatewayRunning);dot('comfy-dot',!!current.comfyRunning);$('gateway-state').textContent=current.gatewayRunning?'运行中':'已停止';$('comfy-state').textContent=current.comfyRunning?'运行中':'已停止';$('private-toggle').checked=!!current.privateAppEnabled;$('app-url').textContent=current.appUrl||'—';$('pairing').textContent=current.pairingCode?current.pairingCode.replace(/(\d{4})(?=\d)/g,'$1 '):'—';$('tail-ip').textContent=current.tailscaleIPv4||'—';if(!busy)$('private-toggle').disabled=false;message(current.privateAppEnabled?'APP私网入口已就绪':'Gateway状态已同步')}
+async function refresh(){if(refreshing)return;refreshing=true;try{render(await api('/api/status'))}catch(error){dot('gateway-dot',false,true);message(`状态读取失败：${error.message}`,true)}finally{refreshing=false}}
+async function action(mode,text){if(busy)return;setBusy(true,text);try{const result=await api('/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode})},180000);if(result.status)render(result.status);else await refresh();message(result.message||'操作完成')}catch(error){message(`操作失败：${error.message}`,true);await refresh()}finally{setBusy(false)}}
+async function copy(value){if(!value)return message('没有可复制的内容',true);try{await navigator.clipboard.writeText(value)}catch{const area=document.createElement('textarea');area.value=value;document.body.append(area);area.select();document.execCommand('copy');area.remove()}message('已复制')}
+$('private-toggle').addEventListener('change',event=>action(event.target.checked?'PrivateOn':'PrivateOff',event.target.checked?'正在开启私网入口…':'正在关闭私网入口…'));
+$('start').addEventListener('click',()=>action('Start','正在启动Canvas…'));
+$('repair').addEventListener('click',()=>action('Repair','正在修复连接…'));
+$('refresh').addEventListener('click',refresh);
+$('stop').addEventListener('click',()=>{if(confirm('停止Canvas Gateway和它的Tailscale入口？\n不会关闭ComfyUI或Tailscale。'))action('Stop','正在停止…')});
+document.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',()=>copy(current[button.dataset.copy]||'')));
+refresh();setInterval(()=>{if(!busy)refresh()},10000);addEventListener('beforeunload',()=>navigator.sendBeacon(`/api/shutdown?token=${encodeURIComponent(token)}`));
+</script>
+</body>
+</html>

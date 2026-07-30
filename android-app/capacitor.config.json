@@ -1,0 +1,11 @@
+{
+  "appId": "io.github.canvascomfyremote.app",
+  "appName": "Canvas",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "2": {
+    "inputs": {
+      "unet_name": "anima_baseV10.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNETLoader"
+    }
+  },
+  "3": {
+    "inputs": {
+      "clip_name": "qwen_3_06b_base.safetensors",
+      "type": "stable_diffusion",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "CLIPLoader"
+    }
+  },
+  "4": {
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "VAELoader"
+    }
+  },
+  "5": {
+    "inputs": {
+      "clip": [
+        "3",
+        0
+      ],
+      "model": [
+        "2",
+        0
+      ],
+      "lora_str": "[{\"lora\":\"anima-base-1-masterpiece-v51.safetensors\",\"weight\":0.7,\"text_encoder_weight\":0.7},{\"lora\":\"anima-rl-v0.1.safetensors\",\"weight\":0.8,\"text_encoder_weight\":0.8},{\"lora\":\"anima-highres-aesthetic-boost.safetensors\",\"weight\":0.6,\"text_encoder_weight\":0.6}]",
+      "temp_lora_str": "[]"
+    },
+    "class_type": "WeiLinPromptUIOnlyLoraStack",
+    "_meta": {
+      "title": "WeiLinPromptUIOnlyLoraStack"
+    }
+  },
+  "6": {
+    "inputs": {
+      "model": [
+        "5",
+        1
+      ],
+      "shift": 3
+    },
+    "class_type": "ModelSamplingAuraFlow",
+    "_meta": {
+      "title": "ModelSamplingAuraFlow"
+    }
+  },
+  "7": {
+    "inputs": {
+      "clip": [
+        "5",
+        0
+      ],
+      "text": "masterpiece, best quality, score_7, safe, newest, highres, 1girl, anime illustration, clean lineart, detailed eyes, soft cel shading, delicate shadows, cinematic composition, looking at viewer"
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Positive Prompt"
+    }
+  },
+  "8": {
+    "inputs": {
+      "clip": [
+        "5",
+        0
+      ],
+      "text": "worst quality, low quality, score_1, score_2, score_3, blurry, jpeg artifacts, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, logo, artist name"
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "9": {
+    "inputs": {
+      "width": 896,
+      "height": 1152,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "EmptyLatentImage"
+    }
+  },
+  "10": {
+    "inputs": {
+      "model": [
+        "6",
+        0
+      ],
+      "positive": [
+        "7",
+        0
+      ],
+      "negative": [
+        "8",
+        0
+      ],
+      "latent_image": [
+        "9",
+        0
+      ],
+      "seed": 123456789,
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler_name": "er_sde",
+      "scheduler": "simple",
+      "denoise": 1
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "11": {
+    "inputs": {
+      "samples": [
+        "10",
+        0
+      ],
+      "vae": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAEDecode"
+    }
+  },
+  "12": {
+    "inputs": {
+      "images": [
+        "11",
+        0
+      ],
+      "filename_prefix": "anima_base_lora_true"
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "SaveImage"
+    }
+  },
+  "13": {
+    "inputs": {
+      "images": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "PreviewImage"
+    }
+  }
+}

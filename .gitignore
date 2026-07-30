@@ -1,0 +1,33 @@
+# Runtime data and personal configuration
+gateway/data/
+gateway/config.json
+Canvas.apk
+*.keystore
+*.jks
+keystore.properties
+
+# Python
+gateway/.venv/
+gateway/build/
+gateway/dist/
+gateway/**/*.pyc
+gateway/**/__pycache__/
+.pytest_cache/
+
+# Android / Node
+android-app/node_modules/
+android-app/dist/
+android-app/.vite/
+android-app/android/.gradle/
+android-app/android/local.properties
+android-app/android/app/build/
+android-app/android/build/
+android-app/android/app/src/main/assets/public/
+
+# Local release and logs
+release/
+logs/
+*.log
+*.tmp
+Thumbs.db
+.DS_Store
