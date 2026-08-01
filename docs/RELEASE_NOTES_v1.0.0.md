@@ -1,19 +1,19 @@
 # Canvas ComfyUI Remote v1.0.0
 
-First public APP-only release of Canvas ComfyUI Remote.
+首个公开发布的 Canvas ComfyUI Remote 安卓 APP 版本。
 
-## Downloads
+## 下载文件
 
-- `Canvas-Android-v1.0.0.apk`: install this on the Android phone.
-- `Canvas-Gateway-Windows-v1.0.0.zip`: extract this on the Windows PC running ComfyUI.
-- `SHA256SUMS.txt`: optional integrity checks for both downloads.
+- `Canvas-Android-v1.0.0.apk`：安装到安卓手机。
+- `Canvas-Gateway-Windows-v1.0.0.zip`：解压到运行 ComfyUI 的 Windows 电脑。
+- `SHA256SUMS.txt`：用于校验以上两个下载文件的完整性。
 
-## Quick start
+## 快速开始
 
-1. Install Tailscale on the Windows PC and Android phone, then sign in to the same Tailnet.
-2. Extract the Windows Gateway ZIP.
-3. Run `First-Run-Setup.cmd` and select the ComfyUI folder containing `main.py`.
-4. Open `Canvas-Control-Center.cmd` and press **Start Canvas**.
-5. Install/open the APK and enter the APP URL and eight-digit pairing code shown by the control center.
+1. 在 Windows 电脑和安卓手机上安装 Tailscale，并登录同一个 Tailnet。
+2. 解压 Windows Gateway ZIP。
+3. 运行 `First-Run-Setup.cmd`，选择包含 `main.py` 的 ComfyUI 文件夹。
+4. 打开 `Canvas-Control-Center.cmd`，点击 **Start Canvas**。
+5. 安装并打开 APK，填写控制中心显示的 APP 地址和八位配对码。
 
-The release package does not include ComfyUI, checkpoints, LoRAs or custom nodes. See `docs/使用说明.md` for troubleshooting and advanced configuration.
+发布包不包含 ComfyUI、底模、LoRA 或第三方自定义节点。安装和故障排查见 [使用说明](使用说明.md)。
