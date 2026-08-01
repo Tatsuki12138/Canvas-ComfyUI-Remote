@@ -1,5 +1,6 @@
 param(
     [string]$ReleaseDirectory = '',
+    [string]$Version = '1.1.0',
     [int]$Port = 3010
 )
 
@@ -7,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 $ProjectRoot = [IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
 $ReleaseRoot = [IO.Path]::GetFullPath((Join-Path $ProjectRoot 'release'))
 if (-not $ReleaseDirectory) {
-    $ReleaseDirectory = Join-Path $ReleaseRoot 'staging\Canvas-Gateway-Windows-v1.0.0'
+    $ReleaseDirectory = Join-Path $ReleaseRoot "staging\Canvas-Gateway-Windows-v$Version"
 }
 $ReleaseDirectory = [IO.Path]::GetFullPath($ReleaseDirectory)
 if (-not $ReleaseDirectory.StartsWith($ReleaseRoot, [StringComparison]::OrdinalIgnoreCase)) {
@@ -16,7 +17,7 @@ if (-not $ReleaseDirectory.StartsWith($ReleaseRoot, [StringComparison]::OrdinalI
 
 $Exe = Join-Path $ReleaseDirectory 'gateway\CanvasGateway.exe'
 if (-not (Test-Path -LiteralPath $Exe)) { throw "Packaged Gateway is missing: $Exe" }
-$SmokeData = Join-Path $ReleaseRoot 'smoke-v1.0.0'
+$SmokeData = Join-Path $env:TEMP ("CanvasGatewaySmoke-" + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $SmokeData -Force | Out-Null
 
 $env:CANVAS_GATEWAY_PORT = [string]$Port
@@ -52,11 +53,27 @@ try {
         throw 'Packaged Gateway exposed an unexpected surface.'
     }
 
+    $listener = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction Stop | Select-Object -First 1
+    if ($listener.LocalAddress -ne '127.0.0.1') {
+        throw "Packaged Gateway listened outside loopback: $($listener.LocalAddress)"
+    }
+
+    $unauthorizedStatus = 0
+    try {
+        Invoke-WebRequest -Uri "http://127.0.0.1:$Port/api/config" -UseBasicParsing -TimeoutSec 3 | Out-Null
+        $unauthorizedStatus = 200
+    } catch {
+        $unauthorizedStatus = [int]$_.Exception.Response.StatusCode
+    }
+    if ($unauthorizedStatus -ne 401) { throw 'Protected API was reachable without a bearer token.' }
+
     [pscustomobject]@{
         Name = $response.name
         Version = $response.version
         Mode = $response.mode
         WebStatus = $webStatus
+        ProtectedApiStatus = $unauthorizedStatus
+        ListenAddress = $listener.LocalAddress
         TestPort = $Port
     }
 } finally {
@@ -70,4 +87,10 @@ try {
     Stop-Process -Id $Process.Id -Force -ErrorAction SilentlyContinue
     Remove-Item Env:CANVAS_GATEWAY_PORT -ErrorAction SilentlyContinue
     Remove-Item Env:CANVAS_DATA_DIR -ErrorAction SilentlyContinue
+    $ResolvedSmoke = [IO.Path]::GetFullPath($SmokeData)
+    $ResolvedTemp = [IO.Path]::GetFullPath($env:TEMP)
+    if ((Test-Path -LiteralPath $ResolvedSmoke) -and
+        $ResolvedSmoke.StartsWith($ResolvedTemp, [StringComparison]::OrdinalIgnoreCase)) {
+        Remove-Item -LiteralPath $ResolvedSmoke -Recurse -Force
+    }
 }

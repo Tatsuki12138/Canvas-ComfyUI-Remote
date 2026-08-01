@@ -9,7 +9,7 @@ import os
 import secrets
 import time
 import uuid
-from collections import OrderedDict
+from collections import OrderedDict, deque
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlencode, urlparse
@@ -50,11 +50,14 @@ from .models import (
 from .runtime import favorites_dir, get_jobs, get_state, log_dir, results_dir, save_state, tavern_images_dir
 
 router = APIRouter()
-APP_VERSION = "0.5.2.1-app-only"
+APP_VERSION = "1.1.0-app-only"
 
 # pairing state — set from app.py before serving
 _pairing_code: str = ""
 _pairing_expires_at: float = 0.0
+_pairing_failures: deque[float] = deque()
+_PAIRING_FAILURE_WINDOW_SECONDS = 60
+_PAIRING_MAX_FAILURES = 8
 _danbooru_client: httpx.AsyncClient | None = None
 _danbooru_client_lock = asyncio.Lock()
 _danbooru_search_cache: dict[tuple[str, int, int], tuple[float, dict[str, Any]]] = {}
@@ -83,6 +86,7 @@ def set_pairing(code: str, expires_at: float) -> None:
     global _pairing_code, _pairing_expires_at
     _pairing_code = code
     _pairing_expires_at = expires_at
+    _pairing_failures.clear()
 
 
 # ---- helpers ----
@@ -133,10 +137,23 @@ async def health() -> dict[str, Any]:
 
 @router.post("/api/pair")
 async def pair(payload: PairRequest) -> dict[str, str]:
-    if time.time() > _pairing_expires_at:
+    now = time.time()
+    if now > _pairing_expires_at:
         raise HTTPException(status_code=410, detail="配对码已过期，请重启网关")
+    cutoff = now - _PAIRING_FAILURE_WINDOW_SECONDS
+    while _pairing_failures and _pairing_failures[0] < cutoff:
+        _pairing_failures.popleft()
+    if len(_pairing_failures) >= _PAIRING_MAX_FAILURES:
+        retry_after = max(1, int(_pairing_failures[0] + _PAIRING_FAILURE_WINDOW_SECONDS - now) + 1)
+        raise HTTPException(
+            status_code=429,
+            detail="配对尝试过多，请稍后再试",
+            headers={"Retry-After": str(retry_after)},
+        )
     if not secrets.compare_digest(payload.code, _pairing_code):
+        _pairing_failures.append(now)
         raise HTTPException(status_code=403, detail="配对码错误")
+    _pairing_failures.clear()
     token = secrets.token_urlsafe(48)
     get_state()["token_hash"] = _token_hash(token)
     get_state()["paired_at"] = time.time()

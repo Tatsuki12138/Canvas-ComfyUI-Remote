@@ -14,17 +14,19 @@ This creates the keystore and generated credentials under `%USERPROFILE%\.canvas
 
 ## Build a release
 
+Install Inno Setup 7 from the official site before building. The bilingual installer uses the official Simplified Chinese language file included with Inno Setup 7.
+
 ```powershell
-.\scripts\Build-Release.ps1 -Version 1.0.0
+.\scripts\Build-Release.ps1 -Version 1.1.0
 ```
 
-The script runs the APP tests, creates a signed APK, packages the Windows Gateway executable and writes SHA256 checksums under `release\v1.0.0`.
+The script runs the APP tests, creates a signed APK, packages the portable Windows Gateway, builds the bilingual setup wizard, verifies install/upgrade/uninstall data preservation, and writes SHA256 checksums under `release\v1.1.0`.
 
 Create and push a matching Git tag only after verifying the assets:
 
 ```powershell
-git tag -a v1.0.0 -m "Canvas ComfyUI Remote v1.0.0"
-git push origin v1.0.0
+git tag -a v1.1.0 -m "Canvas ComfyUI Remote v1.1.0"
+git push origin v1.1.0
 ```
 
-Upload the three generated files to the matching GitHub Release. Do not upload the keystore or `signing.properties`.
+Upload the APK, portable ZIP, setup EXE and `SHA256SUMS.txt` to the matching GitHub and Gitee releases. Do not upload the keystore or `signing.properties`.

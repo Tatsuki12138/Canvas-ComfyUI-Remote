@@ -38,7 +38,16 @@ ComfyUI 127.0.0.1:8188
 
 ### For normal users
 
-Download the APK and Windows Gateway ZIP from the latest GitHub Release. Install the APK, extract the ZIP, then run `First-Run-Setup.cmd`. The packaged Gateway does not require a separate Python installation.
+Download these files from the latest GitHub or Gitee release:
+
+- `Canvas-Gateway-Setup-v1.1.0.exe`: recommended Windows setup wizard
+- `Canvas-Android-v1.1.0.apk`: Android client
+- `Canvas-Gateway-Windows-v1.1.0.zip`: portable alternative
+- `SHA256SUMS.txt`: download integrity hashes
+
+The setup wizard selects the install location and ComfyUI folder, detects common bundled Python layouts, and offers desktop/startup shortcuts. It does not install or change ComfyUI, Tailscale, Windows Firewall, or Tailscale Funnel. Upgrades and uninstalls preserve `%APPDATA%\CanvasGateway` by default.
+
+The public installer is not Authenticode-signed, so Windows may show an unknown-publisher warning. Download it only from this repository and verify `SHA256SUMS.txt`. ZIP users should extract the package and run `First-Run-Setup.cmd`.
 
 ### From source
 
@@ -99,7 +108,7 @@ This repository does not redistribute ComfyUI, checkpoints, LoRAs, tagger models
 
 ## Security
 
-Gateway and ComfyUI bind to loopback by default. Remote access is provided only through Tailscale Serve, and Funnel/public web exposure is intentionally unsupported. Read [SECURITY.md](SECURITY.md) before changing network bindings.
+Gateway and ComfyUI bind to loopback by default. Remote access is provided only through Tailscale Serve, and Funnel/public web exposure is intentionally unsupported. v1.1.0 also restricts browser CORS origins and rate-limits failed pairing attempts. Read [SECURITY.md](SECURITY.md) before changing network bindings and see the [v1.1.0 security review](docs/SECURITY_REVIEW_v1.1.0.md).
 
 ## License
 

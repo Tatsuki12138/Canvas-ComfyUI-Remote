@@ -1,5 +1,5 @@
 param(
-    [string]$Version = '1.0.0',
+    [string]$Version = '1.1.0',
     [string]$SigningProperties = (Join-Path $env:USERPROFILE '.canvas-release\signing.properties')
 )
 
@@ -85,18 +85,39 @@ New-Item -ItemType Directory -Path (Join-Path $StageDir 'gateway'), (Join-Path $
 Copy-Item -LiteralPath $GatewayExe -Destination (Join-Path $StageDir 'gateway\CanvasGateway.exe')
 Copy-Item -LiteralPath $ApkSource -Destination (Join-Path $StageDir 'gateway\Canvas.apk')
 Copy-Item -LiteralPath (Join-Path $GatewayRoot 'workflows') -Destination (Join-Path $StageDir 'gateway\workflows') -Recurse
-Copy-Item -LiteralPath (Join-Path $ProjectRoot 'Canvas-Control-Center.cmd'), (Join-Path $ProjectRoot 'Canvas-App-Mode.cmd'), (Join-Path $ProjectRoot 'First-Run-Setup.cmd'), (Join-Path $ProjectRoot 'config.example.json'), (Join-Path $ProjectRoot 'README.md'), (Join-Path $ProjectRoot 'LICENSE') -Destination $StageDir
+Copy-Item -LiteralPath (Join-Path $ProjectRoot 'Canvas-Control-Center.cmd'), (Join-Path $ProjectRoot 'Canvas-App-Mode.cmd'), (Join-Path $ProjectRoot 'First-Run-Setup.cmd'), (Join-Path $ProjectRoot 'Configure-Canvas.cmd'), (Join-Path $ProjectRoot 'config.example.json'), (Join-Path $ProjectRoot 'README.md'), (Join-Path $ProjectRoot 'LICENSE') -Destination $StageDir
+Copy-Item -LiteralPath (Join-Path $ProjectRoot 'README.en.md'), (Join-Path $ProjectRoot 'SECURITY.md'), (Join-Path $ProjectRoot 'THIRD_PARTY_NOTICES.md') -Destination $StageDir
 Copy-Item -LiteralPath (Join-Path $ProjectRoot 'scripts\Canvas-Control-Center.ps1'), (Join-Path $ProjectRoot 'scripts\Configure-Canvas.ps1'), (Join-Path $ProjectRoot 'scripts\Switch-CanvasMode.ps1'), (Join-Path $ProjectRoot 'scripts\start-gateway.ps1') -Destination (Join-Path $StageDir 'scripts')
 Copy-Item -LiteralPath (Join-Path $ProjectRoot 'control-center\index.html') -Destination (Join-Path $StageDir 'control-center')
 Copy-Item -Path (Join-Path $ProjectRoot 'docs\*') -Destination (Join-Path $StageDir 'docs') -Recurse
 
+& (Join-Path $PSScriptRoot 'Test-PackagedGateway.ps1') -ReleaseDirectory $StageDir -Version $Version
+if ($LASTEXITCODE -ne 0) { throw 'Packaged Gateway verification failed.' }
+
 $ApkAsset = Join-Path $VersionDir "Canvas-Android-v$Version.apk"
 $ZipAsset = Join-Path $VersionDir "Canvas-Gateway-Windows-v$Version.zip"
+$SetupAsset = Join-Path $VersionDir "Canvas-Gateway-Setup-v$Version.exe"
 Copy-Item -LiteralPath $ApkSource -Destination $ApkAsset
 Compress-Archive -Path (Join-Path $StageDir '*') -DestinationPath $ZipAsset -CompressionLevel Optimal
 
+$InnoCandidates = @(
+    (Join-Path $env:LOCALAPPDATA 'Programs\Inno Setup 7\ISCC.exe'),
+    'C:\Program Files\Inno Setup 7\ISCC.exe',
+    'C:\Program Files (x86)\Inno Setup 7\ISCC.exe'
+)
+$InnoCompiler = $InnoCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+if (-not $InnoCompiler) {
+    throw 'Inno Setup 7 is required to build the bilingual Windows installer: https://jrsoftware.org/isdl.php'
+}
+$InstallerScript = Join-Path $ProjectRoot 'installer\CanvasGateway.iss'
+& $InnoCompiler "/DMyAppVersion=$Version" "/DStageDir=$StageDir" "/DOutputDir=$VersionDir" $InstallerScript
+if ($LASTEXITCODE -ne 0) { throw 'Windows installer build failed.' }
+if (-not (Test-Path -LiteralPath $SetupAsset)) { throw "Installer was not created: $SetupAsset" }
+& (Join-Path $PSScriptRoot 'Test-Installer.ps1') -SetupPath $SetupAsset
+if ($LASTEXITCODE -ne 0) { throw 'Windows installer verification failed.' }
+
 $ChecksumPath = Join-Path $VersionDir 'SHA256SUMS.txt'
-@($ApkAsset, $ZipAsset) | ForEach-Object {
+@($ApkAsset, $ZipAsset, $SetupAsset) | ForEach-Object {
     $hash = (Get-FileHash -LiteralPath $_ -Algorithm SHA256).Hash.ToLowerInvariant()
     "$hash  $([IO.Path]::GetFileName($_))"
 } | Set-Content -LiteralPath $ChecksumPath -Encoding ASCII

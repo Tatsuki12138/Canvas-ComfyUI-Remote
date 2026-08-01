@@ -17,7 +17,7 @@ from canvas_gateway.config import DATA_ROOT, PACKAGE_ROOT, load_config
 from canvas_gateway.routes import close_danbooru_client, router, set_pairing
 from canvas_gateway.runtime import init_runtime
 
-APP_VERSION = "0.5.2.1-app-only"
+APP_VERSION = "1.1.0-app-only"
 
 # ---- runtime directories and state ----
 
@@ -119,7 +119,10 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title="Canvas Gateway", docs_url=None, redoc_url=None, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    # Capacitor serves the bundled Android UI from https://localhost.  Keep
+    # localhost variants for development, but do not let arbitrary websites
+    # probe or drive a user's private Gateway from a browser tab.
+    allow_origins=["https://localhost", "http://localhost", "capacitor://localhost"],
     allow_credentials=False,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type", "X-Canvas-API-Key"],

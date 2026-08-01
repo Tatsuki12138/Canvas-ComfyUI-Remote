@@ -1,0 +1,14 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Generated dependency, build and release directories are scanned separately"
+paths = [
+  '''(^|/)gateway/\.venv/''',
+  '''(^|/)gateway/build/''',
+  '''(^|/)gateway/dist/''',
+  '''(^|/)android-app/node_modules/''',
+  '''(^|/)android-app/android/\.gradle/''',
+  '''(^|/)android-app/android/app/build/''',
+  '''(^|/)release/''',
+]

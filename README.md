@@ -40,8 +40,9 @@ ComfyUI 127.0.0.1:8188
 
 从最新版发行页面下载：
 
-- `Canvas-Android-v1.0.0.apk`：安装到安卓手机
-- `Canvas-Gateway-Windows-v1.0.0.zip`：解压到运行 ComfyUI 的 Windows 电脑
+- `Canvas-Gateway-Setup-v1.1.0.exe`：推荐的 Windows 安装向导
+- `Canvas-Android-v1.1.0.apk`：安装到安卓手机
+- `Canvas-Gateway-Windows-v1.1.0.zip`：无需安装的绿色便携版
 - `SHA256SUMS.txt`：用于校验下载文件完整性
 
 下载入口：
@@ -49,7 +50,11 @@ ComfyUI 127.0.0.1:8188
 - [Gitee 发行版](https://gitee.com/tatsuki12138/Canvas-ComfyUI-Remote/releases)
 - [GitHub Releases](https://github.com/Tatsuki12138/Canvas-ComfyUI-Remote/releases)
 
-安装 APK，解压 Windows Gateway，然后双击 `First-Run-Setup.cmd`。打包版 Gateway 已包含运行程序，不要求用户另外安装 Python。
+电脑端优先运行 `Canvas-Gateway-Setup-v1.1.0.exe`。安装向导会依次选择安装位置、ComfyUI 目录和可选代理，并自动识别秋叶整合包及常见便携包的 Python。它还可以创建桌面快捷方式和可选的开机启动项。
+
+安装器只安装 Canvas Gateway，不会安装或修改 ComfyUI、Tailscale、防火墙和 Tailscale Funnel。升级默认保留 `%APPDATA%\CanvasGateway` 中的提示词、设置、收藏和配对状态；卸载也默认保留这些数据。
+
+如果 Windows 显示“未知发布者”，是因为公开版暂未购买代码签名证书。请从本仓库发行页下载，并使用 `SHA256SUMS.txt` 校验文件。也可以下载 ZIP 绿色版，解压后双击 `First-Run-Setup.cmd`。
 
 ### 从源码运行
 
@@ -112,7 +117,7 @@ android-app/android/app/build/outputs/apk/debug/app-debug.apk
 
 ## 安全说明
 
-Gateway 和 ComfyUI 默认只监听电脑回环地址。远程访问仅通过 Tailscale Serve 提供，本版本不支持 Funnel 或公网网页暴露。修改网络监听配置前请先阅读 [SECURITY.md](SECURITY.md)。
+Gateway 和 ComfyUI 默认只监听电脑回环地址。远程访问仅通过 Tailscale Serve 提供，本版本不支持 Funnel 或公网网页暴露。v1.1.0 还限制了浏览器跨域来源，并对配对码失败尝试进行限速。修改网络监听配置前请先阅读 [SECURITY.md](SECURITY.md)；本次检查记录见 [v1.1.0 安全与隐私审计](docs/SECURITY_REVIEW_v1.1.0.md)。
 
 ## 开源协议
 
