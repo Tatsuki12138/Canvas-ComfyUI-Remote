@@ -10,28 +10,6 @@ export const BUILTIN_MODULES = [
   { id: 'natural', label: 'Natural Description', builtin: true },
 ];
 
-export const BLUE_ARCHIVE_GROUP = { id: 'builtin-blue-archive', name: '蔚蓝档案' };
-
-export const BLUE_ARCHIVE_PRESETS = [
-  ['shiroko', '白子', 'shiroko \\(blue archive\\)'],
-  ['ichika', '一花', 'ichika \\(blue archive\\)'],
-  ['mika', '未花', 'mika \\(blue archive\\)'],
-  ['hina', '日奈', 'hina \\(blue archive\\)'],
-  ['yuuka', '优香', 'yuuka \\(blue archive\\)'],
-  ['toki', '时', 'toki \\(blue archive\\)'],
-  ['asuna', '明日奈', 'asuna \\(blue archive\\)'],
-  ['rio', '莉音', 'rio \\(blue archive\\)'],
-  ['kisaki', '妃咲', 'kisaki \\(blue archive\\)'],
-  ['saori', '纱织', 'saori \\(blue archive\\)'],
-  ['hikari', '光', 'hikari \\(blue archive\\)'],
-  ['nozomi', '望', 'nozomi \\(blue archive\\)'],
-].map(([key, name, content]) => ({
-  id: `builtin-blue-archive-${key}`,
-  name,
-  content,
-  groupIds: [BLUE_ARCHIVE_GROUP.id],
-}));
-
 function uniqueStrings(values) {
   return [...new Set((Array.isArray(values) ? values : []).filter((value) => typeof value === 'string' && value))];
 }
@@ -88,22 +66,6 @@ export function normalizeModuleData(value = {}) {
   };
 }
 
-function seedBlueArchive(store) {
-  store.seeds = store.seeds && typeof store.seeds === 'object' ? store.seeds : {};
-  if (store.seeds.blueArchiveV1) return;
-  const character = store.modules.character || emptyModuleData();
-  if (!character.groups.some((group) => group.id === BLUE_ARCHIVE_GROUP.id)) {
-    character.groups.push({ ...BLUE_ARCHIVE_GROUP });
-  }
-  for (const preset of BLUE_ARCHIVE_PRESETS) {
-    if (character.items.some((item) => item.id === preset.id || item.content === preset.content)) continue;
-    const sameName = character.items.some((item) => item.name.trim().toLowerCase() === preset.name.toLowerCase());
-    character.items.push({ ...preset, name: sameName ? `${preset.name} · Danbooru` : preset.name });
-  }
-  store.modules.character = character;
-  store.seeds.blueArchiveV1 = true;
-}
-
 export function normalizePromptStore(raw = {}) {
   const customDefinitions = (Array.isArray(raw.definitions) ? raw.definitions : [])
     .map(normalizeDefinition)
@@ -120,7 +82,6 @@ export function normalizePromptStore(raw = {}) {
     modules[definition.id] = normalizeModuleData(raw.modules?.[definition.id]);
   }
   const store = { version: 3, definitions, modules, seeds: { ...(raw.seeds || {}) } };
-  seedBlueArchive(store);
   return store;
 }
 

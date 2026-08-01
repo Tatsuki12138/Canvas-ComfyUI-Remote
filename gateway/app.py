@@ -17,7 +17,7 @@ from canvas_gateway.config import DATA_ROOT, PACKAGE_ROOT, load_config
 from canvas_gateway.routes import close_danbooru_client, router, set_pairing
 from canvas_gateway.runtime import init_runtime
 
-APP_VERSION = "1.1.0-app-only"
+APP_VERSION = "1.1.1-app-only"
 
 # ---- runtime directories and state ----
 

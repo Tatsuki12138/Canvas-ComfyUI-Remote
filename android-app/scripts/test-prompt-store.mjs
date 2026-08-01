@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import {
-  BLUE_ARCHIVE_PRESETS,
   LEGACY_MODULE_STORAGE_KEY,
   PROMPT_STORE_KEY,
   importBatchItems,
@@ -15,6 +14,14 @@ class MemoryStorage {
   removeItem(key) { this.values.delete(key); }
 }
 
+const freshStorage = new MemoryStorage();
+const fresh = loadPromptStore(freshStorage);
+for (const definition of fresh.definitions) {
+  assert.equal(fresh.modules[definition.id].groups.length, 0, `${definition.id} must not contain a bundled group`);
+  assert.equal(fresh.modules[definition.id].items.length, 0, `${definition.id} must not contain a bundled prompt`);
+  assert.equal(fresh.modules[definition.id].draft, '', `${definition.id} must not contain a bundled draft`);
+}
+
 const legacy = {
   quality: { items: [{ id: 'q1', name: 'Keep me', content: 'quality', selectedIds: [] }], selectedIds: ['q1'] },
   ip: { items: [{ id: 'ip1', name: 'Delete me', content: 'old ip' }], selectedIds: ['ip1'] },
@@ -24,20 +31,18 @@ const migrated = loadPromptStore(storage);
 assert.equal(migrated.modules.quality.items[0].name, 'Keep me');
 assert.equal(migrated.modules.ip, undefined);
 assert.equal(migrated.modules.camera.items.length, 0);
-assert.equal(migrated.modules.character.items.length, BLUE_ARCHIVE_PRESETS.length);
-assert.equal(migrated.modules.character.groups[0].name, '蔚蓝档案');
-assert.equal(migrated.modules.character.items.find((item) => item.name === '白子').content, 'shiroko \\(blue archive\\)');
+assert.equal(migrated.modules.character.items.length, 0);
+assert.equal(migrated.modules.character.groups.length, 0);
 assert.equal(storage.getItem(LEGACY_MODULE_STORAGE_KEY), null);
 assert.ok(storage.getItem(PROMPT_STORE_KEY));
 
 const savedOnce = JSON.parse(storage.getItem(PROMPT_STORE_KEY));
 savedOnce.definitions.push({ id: 'custom-test', label: 'Custom', builtin: false });
 savedOnce.modules['custom-test'] = { groups: [], items: [{ id: 'c1', name: 'Custom item', content: 'kept', groupIds: [] }] };
-savedOnce.modules.character.items = savedOnce.modules.character.items.filter((item) => item.name !== '白子');
 storage.setItem(PROMPT_STORE_KEY, JSON.stringify(savedOnce));
 const loadedAgain = loadPromptStore(storage);
 assert.equal(loadedAgain.modules['custom-test'].items[0].content, 'kept');
-assert.equal(loadedAgain.modules.character.items.some((item) => item.name === '白子'), false, 'seeded items must not reappear after user deletion');
+assert.equal(loadedAgain.modules.character.items.length, 0, 'an empty prompt module must remain empty');
 
 const parsed = parseBatchImport('One\talpha, beta\nTwo\tgamma');
 assert.equal(parsed.errors.length, 0);

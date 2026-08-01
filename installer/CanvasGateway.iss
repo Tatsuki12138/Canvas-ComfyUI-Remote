@@ -1,5 +1,5 @@
 #ifndef MyAppVersion
-  #define MyAppVersion "1.1.0"
+  #define MyAppVersion "1.1.1"
 #endif
 #ifndef StageDir
   #error StageDir must point to the staged Canvas Gateway files.
@@ -48,61 +48,61 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 
 [CustomMessages]
-english.ComfyPageTitle=Locate ComfyUI
-english.ComfyPageDescription=Select the folder that contains ComfyUI main.py.
+english.ComfyPageTitle=Specify the ComfyUI Installation Directory
+english.ComfyPageDescription=Select the ComfyUI root directory containing main.py.
 english.ComfyPagePrompt=ComfyUI folder:
-english.PythonPageTitle=Locate ComfyUI Python
-english.PythonPageDescription=The installer normally detects the Python bundled with ComfyUI.
+english.PythonPageTitle=Specify the ComfyUI Python Interpreter
+english.PythonPageDescription=The installer will attempt to detect the Python interpreter supplied with ComfyUI.
 english.PythonPagePrompt=Python executable:
-english.ProxyPageTitle=Optional proxy
-english.ProxyPageDescription=Leave this blank unless Danbooru must use a proxy on this PC.
+english.ProxyPageTitle=Configure an Optional Network Proxy
+english.ProxyPageDescription=Specify a proxy only when Danbooru access from this computer requires one. Otherwise, leave this field blank.
 english.ProxyPagePrompt=Proxy URL (for example http://127.0.0.1:7890):
-english.ExistingTitle=Existing Canvas data detected
-english.ExistingDescription=Your current configuration and personal data will be preserved.
-english.ExistingBody=Canvas found an existing configuration at:%n%n%1%n%nThe installer will update program files only. Prompts, settings, favorites, pairing state and logs will not be replaced. To change the ComfyUI path later, run "Configure Canvas Gateway" from the Start menu.
-english.PrivacyTitle=Privacy and network behavior
-english.PrivacyDescription=Review what the installer changes before continuing.
-english.PrivacyBody=Canvas Gateway is installed for the current Windows user and listens on 127.0.0.1 only. Remote APP access is provided by your existing Tailscale private network. The installer does not enable Funnel, upload prompts or images, or install telemetry.%n%nPersonal data is stored separately in:%n%1%n%nUninstall keeps this directory unless you explicitly choose to delete it.
-english.InvalidComfy=Select a ComfyUI folder that contains main.py.
-english.InvalidPython=Select the Python executable used by this ComfyUI installation.
-english.InvalidProxy=The proxy must be blank or start with http:// or https:// and must not contain quotes or line breaks.
-english.ConfigFailed=Canvas configuration failed with exit code %1. Setup cannot continue safely.
+english.ExistingTitle=Existing Canvas Data Detected
+english.ExistingDescription=The existing configuration and personal data will be preserved.
+english.ExistingBody=An existing Canvas configuration was detected at:%n%n%1%n%nThis installation updates program files only. Existing prompts, settings, favorites, pairing state and logs will remain unchanged. To revise the ComfyUI path after installation, select "Configure Canvas Gateway" from the Start menu.
+english.PrivacyTitle=Privacy and Network Operation Notice
+english.PrivacyDescription=Review the installation scope and data-handling policy before proceeding.
+english.PrivacyBody=Canvas Gateway is installed for the current Windows user and listens exclusively on 127.0.0.1. Remote APP access is provided through the user's existing Tailscale private network. The installer does not enable Tailscale Funnel, transmit prompts or images to a Canvas-operated service, or install telemetry components.%n%nPersonal data is stored separately at:%n%1%n%nThe uninstaller preserves this directory by default. Deletion occurs only after explicit user confirmation.
+english.InvalidComfy=The selected directory is invalid. Select a ComfyUI root directory containing main.py.
+english.InvalidPython=The selected file is invalid. Select the Python executable used by this ComfyUI installation.
+english.InvalidProxy=The proxy address must be blank or begin with http:// or https://. Quotes, line breaks and unsupported characters are not permitted.
+english.ConfigFailed=Canvas configuration did not complete successfully. Exit code: %1. Installation has been terminated to prevent an incomplete configuration.
 english.DesktopTask=Create a desktop shortcut
-english.AutoStartTask=Start Canvas Gateway with Windows (off by default)
+english.AutoStartTask=Start Canvas Gateway when Windows starts (disabled by default)
 english.LaunchControl=Open Canvas Control Center
 english.OpenTailscale=Open the Tailscale download page
-english.RemoveDataPrompt=Also permanently delete Canvas prompts, settings, favorites, pairing state and logs from:%n%n%1%n%nChoose No to keep them for a later reinstall.
+english.RemoveDataPrompt=Do you also intend to permanently delete Canvas prompts, settings, favorites, pairing state and logs from the following directory?%n%n%1%n%nSelect No to preserve this data for a subsequent installation.
 english.ConfigureShortcut=Configure Canvas Gateway
 english.ControlShortcut=Canvas Control Center
-english.TailscaleMissing=Tailscale was not detected. Canvas can be installed now, but remote APP access requires Tailscale to be installed and signed in later.
+english.TailscaleMissing=Tailscale was not detected. Canvas Gateway may be installed without it; however, remote APP access will remain unavailable until Tailscale is installed and authenticated.
 
-chinesesimplified.ComfyPageTitle=选择 ComfyUI
-chinesesimplified.ComfyPageDescription=请选择包含 ComfyUI main.py 的文件夹。
+chinesesimplified.ComfyPageTitle=指定 ComfyUI 安装目录
+chinesesimplified.ComfyPageDescription=请选择包含 main.py 的 ComfyUI 根目录。
 chinesesimplified.ComfyPagePrompt=ComfyUI 文件夹：
-chinesesimplified.PythonPageTitle=选择 ComfyUI Python
-chinesesimplified.PythonPageDescription=安装程序通常会自动识别 ComfyUI 整合包自带的 Python。
+chinesesimplified.PythonPageTitle=指定 ComfyUI Python 解释器
+chinesesimplified.PythonPageDescription=安装程序将尝试自动识别 ComfyUI 整合包附带的 Python 解释器。
 chinesesimplified.PythonPagePrompt=Python 可执行文件：
-chinesesimplified.ProxyPageTitle=可选代理
-chinesesimplified.ProxyPageDescription=只有电脑访问 Danbooru 需要代理时才填写，否则请留空。
+chinesesimplified.ProxyPageTitle=配置可选网络代理
+chinesesimplified.ProxyPageDescription=仅当本机访问 Danbooru 必须使用代理时填写；其他情况下应保持为空。
 chinesesimplified.ProxyPagePrompt=代理地址（例如 http://127.0.0.1:7890）：
 chinesesimplified.ExistingTitle=检测到现有 Canvas 数据
-chinesesimplified.ExistingDescription=当前配置和个人数据将被保留。
-chinesesimplified.ExistingBody=Canvas 在以下位置发现了现有配置：%n%n%1%n%n安装程序只更新程序文件，不会覆盖提示词、设置、收藏、配对状态和日志。以后需要更换 ComfyUI 路径时，可从开始菜单运行“配置 Canvas Gateway”。
-chinesesimplified.PrivacyTitle=隐私与网络行为
-chinesesimplified.PrivacyDescription=继续前请确认安装程序会进行哪些操作。
-chinesesimplified.PrivacyBody=Canvas Gateway 仅为当前 Windows 用户安装，并且只监听 127.0.0.1。手机 APP 通过你现有的 Tailscale 私有网络访问。安装程序不会启用 Funnel，不会上传提示词或图片，也不包含遥测。%n%n个人数据独立保存在：%n%1%n%n卸载时默认保留该目录，只有你明确选择后才会删除。
-chinesesimplified.InvalidComfy=请选择包含 main.py 的 ComfyUI 文件夹。
-chinesesimplified.InvalidPython=请选择该 ComfyUI 使用的 Python 可执行文件。
-chinesesimplified.InvalidProxy=代理地址必须留空，或以 http://、https:// 开头，并且不能包含引号或换行。
-chinesesimplified.ConfigFailed=Canvas 配置失败，退出代码为 %1。为了安全，安装无法继续。
+chinesesimplified.ExistingDescription=现有配置及个人数据将予以保留。
+chinesesimplified.ExistingBody=安装程序在以下位置检测到现有 Canvas 配置：%n%n%1%n%n本次安装仅更新程序文件。现有提示词、设置、收藏、配对状态及日志均保持不变。如需在安装完成后调整 ComfyUI 路径，请从开始菜单运行“配置 Canvas Gateway”。
+chinesesimplified.PrivacyTitle=隐私及网络运行说明
+chinesesimplified.PrivacyDescription=继续安装前，请审阅本程序的安装范围及数据处理规则。
+chinesesimplified.PrivacyBody=Canvas Gateway 按当前 Windows 用户范围安装，并仅监听 127.0.0.1。远程 APP 访问由用户现有的 Tailscale 私有网络提供。安装程序不会启用 Tailscale Funnel，不会向 Canvas 运营的服务传输提示词或图片，也不会安装遥测组件。%n%n个人数据独立存储于：%n%1%n%n卸载程序默认保留该目录。仅在用户明确确认后，相关个人数据方可删除。
+chinesesimplified.InvalidComfy=所选目录无效。请选择包含 main.py 的 ComfyUI 根目录。
+chinesesimplified.InvalidPython=所选文件无效。请选择当前 ComfyUI 安装所使用的 Python 可执行文件。
+chinesesimplified.InvalidProxy=代理地址应保持为空，或以 http://、https:// 开头；不得包含引号、换行符或其他不受支持的字符。
+chinesesimplified.ConfigFailed=Canvas 配置未能成功完成，退出代码为 %1。为避免产生不完整配置，安装程序已终止。
 chinesesimplified.DesktopTask=创建桌面快捷方式
-chinesesimplified.AutoStartTask=随 Windows 启动 Canvas Gateway（默认关闭）
+chinesesimplified.AutoStartTask=Windows 启动时运行 Canvas Gateway（默认禁用）
 chinesesimplified.LaunchControl=打开 Canvas 控制中心
 chinesesimplified.OpenTailscale=打开 Tailscale 下载页面
-chinesesimplified.RemoveDataPrompt=是否同时永久删除以下目录中的 Canvas 提示词、设置、收藏、配对状态和日志？%n%n%1%n%n选择“否”可保留数据，以便以后重新安装。
+chinesesimplified.RemoveDataPrompt=是否同时永久删除以下目录中的 Canvas 提示词、设置、收藏、配对状态及日志？%n%n%1%n%n选择“否”将保留相关数据，以供后续重新安装时使用。
 chinesesimplified.ConfigureShortcut=配置 Canvas Gateway
 chinesesimplified.ControlShortcut=Canvas 控制中心
-chinesesimplified.TailscaleMissing=未检测到 Tailscale。现在仍可安装 Canvas，但手机远程访问需要之后安装并登录 Tailscale。
+chinesesimplified.TailscaleMissing=未检测到 Tailscale。Canvas Gateway 可继续安装；但在完成 Tailscale 安装及身份验证前，远程 APP 访问功能将不可用。
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:DesktopTask}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked

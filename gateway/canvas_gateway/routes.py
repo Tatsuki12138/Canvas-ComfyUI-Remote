@@ -50,7 +50,7 @@ from .models import (
 from .runtime import favorites_dir, get_jobs, get_state, log_dir, results_dir, save_state, tavern_images_dir
 
 router = APIRouter()
-APP_VERSION = "1.1.0-app-only"
+APP_VERSION = "1.1.1-app-only"
 
 # pairing state — set from app.py before serving
 _pairing_code: str = ""
