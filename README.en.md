@@ -43,6 +43,8 @@ Download these files from the latest GitHub or Gitee release:
 - `Canvas-Gateway-Setup-v1.1.1.exe`: recommended Windows setup wizard
 - `Canvas-Android-v1.1.1.apk`: Android client
 - `Canvas-Gateway-Windows-v1.1.1.zip`: portable alternative
+- `Canvas-Custom-Workflow-Guide.zh-CN.md`: detailed custom-workflow guide in Chinese
+- `WeiLin-Comfyui-Tools-v0.0.79-efd9237-GPL-2.0.zip`: optional third-party source snapshot for the Anima LoRA stack
 - `SHA256SUMS.txt`: download integrity hashes
 
 The setup wizard selects the install location and ComfyUI folder, detects common bundled Python layouts, and offers desktop/startup shortcuts. It does not install or change ComfyUI, Tailscale, Windows Firewall, or Tailscale Funnel. Upgrades and uninstalls preserve `%APPDATA%\CanvasGateway` by default.
@@ -104,7 +106,9 @@ This directory contains the user's configuration, pairing state, cached results,
 
 ## Models and dependencies
 
-This repository does not redistribute ComfyUI, checkpoints, LoRAs, tagger models or third-party custom nodes. Workflow templates may require the user to install compatible models and nodes separately under their own licenses.
+The Canvas installer and portable packages do not bundle ComfyUI, checkpoints, LoRAs, tagger models or third-party custom nodes. Workflow templates may require the user to install compatible models and nodes separately under their own licenses.
+
+A release page may provide a separately labeled third-party source snapshot for users who cannot directly access an upstream repository. Such an asset is not Canvas MIT code and retains its original license and source attribution. The Anima Base dynamic LoRA stack references `WeiLinPromptUIOnlyLoraStack`; the optional snapshot is licensed under GPL-2.0 and originates from [WeiLin-Comfyui-Tools](https://github.com/weilin9999/WeiLin-Comfyui-Tools).
 
 ## Security
 

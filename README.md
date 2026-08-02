@@ -43,6 +43,8 @@ ComfyUI 127.0.0.1:8188
 - `Canvas-Gateway-Setup-v1.1.1.exe`：推荐的 Windows 安装向导
 - `Canvas-Android-v1.1.1.apk`：安装到安卓手机
 - `Canvas-Gateway-Windows-v1.1.1.zip`：无需安装的绿色便携版
+- `Canvas-Custom-Workflow-Guide.zh-CN.md`：自定义工作流封装中文说明
+- `WeiLin-Comfyui-Tools-v0.0.79-efd9237-GPL-2.0.zip`：Anima LoRA 堆所需的可选第三方节点源码快照
 - `SHA256SUMS.txt`：用于校验下载文件完整性
 
 下载入口：
@@ -115,7 +117,9 @@ android-app/android/app/build/outputs/apk/debug/app-debug.apk
 
 ## 模型与依赖
 
-本仓库不分发 ComfyUI、底模、LoRA、反推模型或第三方自定义节点。工作流模板可能要求用户自行安装对应模型和节点，并遵守各自的许可证。
+Canvas 安装器和便携包不捆绑 ComfyUI、底模、LoRA、反推模型或第三方自定义节点。工作流模板可能要求用户自行安装对应模型和节点，并遵守各自的许可证。
+
+发行页可以提供单独标注的第三方节点源码快照，方便无法直接访问上游仓库的用户安装。此类文件不属于 Canvas 的 MIT 代码，并保留其原始许可证和源码来源。Anima Base 的动态 LoRA 堆依赖 `WeiLinPromptUIOnlyLoraStack`；对应可选资源采用 GPL-2.0，来源见 [WeiLin-Comfyui-Tools](https://github.com/weilin9999/WeiLin-Comfyui-Tools)。
 
 ## 安全说明
 

@@ -15,4 +15,12 @@
 - `Canvas-Gateway-Setup-v1.1.1.exe`：Windows 安装程序；
 - `Canvas-Gateway-Windows-v1.1.1.zip`：Windows 便携包；
 - `Canvas-Android-v1.1.1.apk`：Android 客户端；
+- `Canvas-Custom-Workflow-Guide.zh-CN.md`：自定义工作流封装、参数映射和 AI 辅助编写规范；
+- `WeiLin-Comfyui-Tools-v0.0.79-efd9237-GPL-2.0.zip`：Anima Base 动态 LoRA 堆所需的可选第三方节点源码快照；
 - `SHA256SUMS.txt`：发布文件 SHA-256 校验值。
+
+## 可选第三方节点说明
+
+`WeiLin-Comfyui-Tools-v0.0.79-efd9237-GPL-2.0.zip` 来自独立项目 [WeiLin-Comfyui-Tools](https://github.com/weilin9999/WeiLin-Comfyui-Tools)，固定到上游 `v0.0.79 / efd9237`，采用 GPL-2.0 许可证。压缩包保留完整源码和许可证，不属于 Canvas 的 MIT 代码，也没有被嵌入 Windows 安装程序、便携包或 Android APK。
+
+需要使用 Anima Base 动态 LoRA 堆的用户可以将其中的 `weilin-comfyui-tools` 目录放入 `ComfyUI\custom_nodes\`，使用 ComfyUI 自己的 Python 安装 `requirements.txt`，然后重启 ComfyUI。完整步骤见仓库中的中文使用说明。

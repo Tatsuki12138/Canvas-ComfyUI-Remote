@@ -8,4 +8,4 @@ The included workflow JSON files contain graph configuration only and do not inc
 
 ## Optional workflow interoperability
 
-The bundled Anima Base workflow template references `WeiLinPromptUIOnlyLoraStack` (displayed as WeiLin LoRA Stack), provided by the independent [WeiLin-Comfyui-Tools](https://github.com/weilin9999/WeiLin-Comfyui-Tools) project. That project is licensed under GPL-2.0. Its source code is not included in Canvas release packages; users who install it must follow the upstream project's installation guidance and license.
+The bundled Anima Base workflow template references `WeiLinPromptUIOnlyLoraStack` (displayed as WeiLin LoRA Stack), provided by the independent [WeiLin-Comfyui-Tools](https://github.com/weilin9999/WeiLin-Comfyui-Tools) project. That project is licensed under GPL-2.0. Its source code is not included inside the Canvas installer, portable Gateway package or Android APK. A Canvas release page may offer an independently labeled, unmodified source snapshot as an optional download. The snapshot remains under GPL-2.0 and includes the upstream license and source files.
