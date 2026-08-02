@@ -45,7 +45,8 @@ ComfyUI 127.0.0.1:8188
 - `Canvas-Gateway-Windows-v1.1.1.zip`：无需安装的绿色便携版
 - `Canvas-Custom-Workflow-Guide.zh-CN.md`：自定义工作流封装中文说明
 - `WeiLin-Comfyui-Tools-v0.0.79-efd9237-GPL-2.0.zip`：Anima LoRA 堆所需的可选第三方节点源码快照
-- `SHA256SUMS.txt`：用于校验下载文件完整性
+- `SHA256SUMS-v1.1.1.txt`：推荐使用的版本化 SHA-256 校验表
+- `SHA256SUMS.txt`：与上述内容相同的兼容文件名
 
 下载入口：
 

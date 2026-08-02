@@ -17,7 +17,8 @@
 - `Canvas-Android-v1.1.1.apk`：Android 客户端；
 - `Canvas-Custom-Workflow-Guide.zh-CN.md`：自定义工作流封装、参数映射和 AI 辅助编写规范；
 - `WeiLin-Comfyui-Tools-v0.0.79-efd9237-GPL-2.0.zip`：Anima Base 动态 LoRA 堆所需的可选第三方节点源码快照；
-- `SHA256SUMS.txt`：发布文件 SHA-256 校验值。
+- `SHA256SUMS-v1.1.1.txt`：推荐使用的版本化发布文件 SHA-256 校验表；
+- `SHA256SUMS.txt`：内容相同的兼容文件名。
 
 ## 可选第三方节点说明
 

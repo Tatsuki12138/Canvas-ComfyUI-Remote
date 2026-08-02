@@ -45,7 +45,8 @@ Download these files from the latest GitHub or Gitee release:
 - `Canvas-Gateway-Windows-v1.1.1.zip`: portable alternative
 - `Canvas-Custom-Workflow-Guide.zh-CN.md`: detailed custom-workflow guide in Chinese
 - `WeiLin-Comfyui-Tools-v0.0.79-efd9237-GPL-2.0.zip`: optional third-party source snapshot for the Anima LoRA stack
-- `SHA256SUMS.txt`: download integrity hashes
+- `SHA256SUMS-v1.1.1.txt`: recommended versioned SHA-256 checksum list
+- `SHA256SUMS.txt`: compatibility alias with the same contents
 
 The setup wizard selects the install location and ComfyUI folder, detects common bundled Python layouts, and offers desktop/startup shortcuts. It does not install or change ComfyUI, Tailscale, Windows Firewall, or Tailscale Funnel. Upgrades and uninstalls preserve `%APPDATA%\CanvasGateway` by default.
 

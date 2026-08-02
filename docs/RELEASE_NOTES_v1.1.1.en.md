@@ -17,7 +17,8 @@
 - `Canvas-Android-v1.1.1.apk`: Android client.
 - `Canvas-Custom-Workflow-Guide.zh-CN.md`: detailed custom-workflow packaging and AI mapping guide in Chinese.
 - `WeiLin-Comfyui-Tools-v0.0.79-efd9237-GPL-2.0.zip`: optional third-party source snapshot required by the Anima Base dynamic LoRA stack.
-- `SHA256SUMS.txt`: SHA-256 checksums for the release files.
+- `SHA256SUMS-v1.1.1.txt`: recommended versioned SHA-256 checksum list.
+- `SHA256SUMS.txt`: compatibility alias with the same contents.
 
 ## Optional third-party node
 
