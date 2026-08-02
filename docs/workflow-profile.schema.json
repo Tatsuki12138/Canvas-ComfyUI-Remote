@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Tatsuki12138/Canvas-ComfyUI-Remote/blob/main/docs/workflow-profile.schema.json",
+  "title": "Canvas workflow definition",
+  "description": "Schema for one item in Canvas Gateway config.json workflows array.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "label", "path", "model_kind", "features", "defaults", "node_map"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^workflows/.+\\.json$"
+    },
+    "model_kind": {
+      "type": "string",
+      "enum": ["checkpoint", "unet"]
+    },
+    "model_dirs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": []
+    },
+    "model_include_patterns": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "default": []
+    },
+    "features": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["txt2img", "hires"]},
+      "uniqueItems": true
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "width": {"type": "integer", "minimum": 512, "maximum": 2048, "multipleOf": 64},
+        "height": {"type": "integer", "minimum": 512, "maximum": 2048, "multipleOf": 64},
+        "steps": {"type": "integer", "minimum": 1, "maximum": 100},
+        "cfg": {"type": "number", "minimum": 0, "maximum": 30},
+        "hires_steps": {"type": "integer", "minimum": 1, "maximum": 100},
+        "hires_cfg": {"type": "number", "minimum": 0, "maximum": 30},
+        "hires_denoise": {"type": "number", "minimum": 0, "maximum": 1},
+        "hires_kernel_size": {"type": "integer", "minimum": 1, "maximum": 8},
+        "seed": {"type": "integer", "minimum": -1, "maximum": 9223372036854775807}
+      }
+    },
+    "node_map": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "positive": {"$ref": "#/$defs/nodeInput"},
+        "negative": {"$ref": "#/$defs/nodeInput"},
+        "width": {"$ref": "#/$defs/nodeInput"},
+        "height": {"$ref": "#/$defs/nodeInput"},
+        "steps": {"$ref": "#/$defs/nodeInput"},
+        "cfg": {"$ref": "#/$defs/nodeInput"},
+        "seed": {"$ref": "#/$defs/nodeInput"},
+        "hires_seed": {"$ref": "#/$defs/nodeInput"},
+        "filename_prefix": {"$ref": "#/$defs/nodeInput"},
+        "sampler_name": {"$ref": "#/$defs/nodeInput"},
+        "scheduler": {"$ref": "#/$defs/nodeInput"},
+        "hires_steps": {"$ref": "#/$defs/nodeInput"},
+        "hires_cfg": {"$ref": "#/$defs/nodeInput"},
+        "hires_denoise": {"$ref": "#/$defs/nodeInput"},
+        "hires_sampler_name": {"$ref": "#/$defs/nodeInput"},
+        "hires_scheduler": {"$ref": "#/$defs/nodeInput"},
+        "kernel_size": {"$ref": "#/$defs/nodeInput"},
+        "lora_stack": {"$ref": "#/$defs/nodeInput"},
+        "base_model": {"$ref": "#/$defs/nodeInput"},
+        "checkpoint": {"$ref": "#/$defs/nodeInput"}
+      }
+    }
+  },
+  "$defs": {
+    "nodeInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node", "input"],
+      "properties": {
+        "node": {"type": "string", "minLength": 1},
+        "input": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

@@ -1,5 +1,7 @@
 # Workflow integration
 
+For the complete Chinese guide, including a beginner-safe procedure, parameter reference, LoRA stack notes, custom-node security guidance and a prompt for AI assistants, see [自定义工作流封装指南.md](%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%B0%81%E8%A3%85%E6%8C%87%E5%8D%97.md). A machine-readable definition schema is available in [workflow-profile.schema.json](workflow-profile.schema.json).
+
 Canvas sends API-format workflow JSON to ComfyUI. A workflow definition combines a template path with a `node_map` describing which node input receives each APP parameter.
 
 ## Export a template

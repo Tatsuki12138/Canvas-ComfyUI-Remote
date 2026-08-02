@@ -82,6 +82,8 @@ Canvas-Control-Center.cmd
 
 完整安装、连接和故障排查说明见 [docs/使用说明.md](docs/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md)。
 
+需要封装自己的 ComfyUI 工作流时，请阅读 [自定义工作流封装指南](docs/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%B0%81%E8%A3%85%E6%8C%87%E5%8D%97.md)。其中包含适合初次使用者的完整步骤、`node_map` 规范、第三方节点检查方法，以及可直接交给其他 AI 的任务模板。
+
 ## 编译安卓 APP
 
 安装 Node.js 20+、Android Studio 和 JDK 17，然后运行：
